@@ -1,0 +1,28 @@
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.word-text {
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+}
+
+button {
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid black;
+}
