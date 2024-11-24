@@ -1,39 +1,24 @@
 import "./App.css";
 
-import WordManager from "./WordManager";
-import TestManager from "./TestManager";
-import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import SignInUp from "./Pages/SignInUp";
+import Home from "./Pages/Home";
+import TestManager from "./Pages/TestManager";
+import WordManager from "./Pages/WordManager";
 
 function App() {
-  const [screen, setScreen] = useState("home");
-  const renderScreen = () => {
-    switch (screen) {
-      case "wordManager":
-        return <WordManager onBack={() => setScreen("home")} />;
-      case "testManager":
-        return <TestManager onBack={() => setScreen("home")} />;
-      default:
-        return (
-          <div className="home">
-            <h1>Title</h1>
-            <button
-              className="wordManager"
-              onClick={() => setScreen("wordManager")}
-            >
-              단어장
-            </button>
-            <button
-              className="testManager"
-              onClick={() => setScreen("testManager")}
-              style={{ marginLeft: "10px" }}
-            >
-              테스트
-            </button>
-          </div>
-        );
-    }
-  };
-  return <div className="App">{renderScreen()}</div>;
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="/login" element={<SignInUp />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/home/wordManager" element={<WordManager />} />
+                <Route path="/home/testManager" element={<TestManager />} />
+                <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
