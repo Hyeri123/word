@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./TestManager.css";
+import "../style.css";
 import { useNavigate } from "react-router-dom";
 
 function TestManager() {

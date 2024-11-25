@@ -117,9 +117,6 @@ const SignInUp = () => {
                         type="password"
                         placeholder="Password"
                     />
-                    <Components.Anchor href="#">
-                        Forgot your password?
-                    </Components.Anchor>
                     <Components.Button type="submit">Sign In</Components.Button>
                 </Components.Form>
             </Components.SignInContainer>
