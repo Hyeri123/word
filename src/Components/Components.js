@@ -12,7 +12,7 @@ export const Container = styled.div`
     width: 678px;
     max-width: 100%;
     min-height: 400px;
-    margin: auto; /* 페이지 가운데 배치 */
+    margin: 7% auto; /* 페이지 가운데 배치 */
 `;
 
 export const SignUpContainer = styled.div`
