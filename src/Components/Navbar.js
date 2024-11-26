@@ -22,6 +22,7 @@ const Navbar = () => {
                 </Link>
                 <Link to="/wordManager">My word</Link>
                 <Link to="/testManager">Test</Link>
+                <Link to="/bookmarks">Bookmark</Link>
                 {loggedIn ? (
                     <Link to="#" onClick={handleLogout}>
                         {" "}
