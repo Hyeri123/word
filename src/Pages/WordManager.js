@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./WordManager.css";
-import { useNavigate } from "react-router-dom";
 
 function EditMode({
   english,
@@ -65,7 +64,6 @@ function WordManager() {
   const [editingEnglish, setEditingEnglish] = useState("");
   const [editingKorean, setEditingKorean] = useState("");
   const [sortOption, setSortOption] = useState("recent");
-  const navigate = useNavigate();
 
   const addWord = () => {
     if (newEnglish.trim() === "" || newKorean.trim() === "") return;

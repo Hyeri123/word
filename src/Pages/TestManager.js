@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./TestManager.css";
 import "../style.css";
-import { useNavigate } from "react-router-dom";
 
 function TestManager() {
   const [questions] = useState(["apple", "banana", "cherry"]);
@@ -10,7 +9,6 @@ function TestManager() {
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const navigate = useNavigate();
 
   const handleAnswer = () => {
     if (!currentAnswer.trim()) return;
