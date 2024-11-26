@@ -123,18 +123,18 @@ function WordManager() {
 
   return (
     <div>
-      <h2>단어장</h2>
-      <div>
+      <h1>Vocabulary</h1>
+      <div class="input-container">
         <input
           type="text"
-          placeholder="영단어"
+          placeholder="English"
           value={newEnglish}
           onChange={(e) => setNewEnglish(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "add")}
         />
         <input
           type="text"
-          placeholder="뜻"
+          placeholder="Korean"
           value={newKorean}
           onChange={(e) => setNewKorean(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "add")}
