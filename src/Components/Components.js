@@ -73,8 +73,8 @@ export const Input = styled.input`
 
 export const Button = styled.button`
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #87ceeb;
+    background-color: #87ceeb;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -88,6 +88,7 @@ export const Button = styled.button`
     &:focus {
         outline: none;
     }
+    margin-top: 10px;
 `;
 export const GhostButton = styled(Button)`
     background-color: transparent;
@@ -115,9 +116,9 @@ export const OverlayContainer = styled.div`
 `;
 
 export const Overlay = styled.div`
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background: #5f9ea0;
+    background: -webkit-linear-gradient(to right, #4682b4, #5f9ea0);
+    background: linear-gradient(to right, #4682b4, #5f9ea0);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
