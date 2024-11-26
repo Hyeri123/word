@@ -126,13 +126,6 @@ function WordManager() {
   return (
     <div>
       <h2>단어장</h2>
-      <button
-        onClick={() => {
-          navigate("/home");
-        }}
-      >
-        메인
-      </button>
       <div>
         <input
           type="text"
