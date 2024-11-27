@@ -72,7 +72,7 @@ function TestManager() {
               <div className="result-item" key={index}>
                 <div className="result-column english">{item.question}</div>
                 <div
-                  className={`result-column korean" ${
+                  className={`result-column korean ${
                     item.correct ? "" : "incorrect"
                   }`}
                 >
@@ -81,18 +81,23 @@ function TestManager() {
               </div>
             ))}
           </div>
-          <button onClick={resetTest}>다시 시작</button>
-          <p>
-            <h1>오답노트</h1>
-          </p>
-          {answers
-            .filter((item) => !item.correct)
-            .map((item, index) => (
-              <div className="result-item" key={index}>
-                <div className="result-column english">{item.question}</div>
-                <div className="result-column korean">{item.correctAnswer}</div>
-              </div>
-            ))}
+          <button id="reset-button" onClick={resetTest}>
+            다시 시작
+          </button>
+
+          <h1>오답노트</h1>
+          <div className="result-list">
+            {answers
+              .filter((item) => !item.correct)
+              .map((item, index) => (
+                <div className="result-item" key={index}>
+                  <div className="result-column english">{item.question}</div>
+                  <div className="result-column korean">
+                    {item.correctAnswer}
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
       )}
     </div>
