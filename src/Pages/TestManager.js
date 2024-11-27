@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./TestManager.css";
-import "../style.css";
 
 function TestManager() {
   const [questions] = useState(["apple", "banana", "cherry"]);
@@ -48,13 +47,12 @@ function TestManager() {
   };
 
   return (
-    <div>
-      <h2>단어 테스트</h2>
+    <div className="test-container">
+      <h1>{currentQuestionIndex < questions.length ? "Test" : "Result"}</h1>
       {currentQuestionIndex < questions.length ? (
-        <div>
-          <p>
-            다음 단어의 뜻은? <strong>{questions[currentQuestionIndex]}</strong>
-          </p>
+        <div className="problem">
+          <p>다음 단어의 뜻은?</p>
+          <p>{questions[currentQuestionIndex]}</p>
           <input
             type="text"
             placeholder="답변 입력"
@@ -65,33 +63,36 @@ function TestManager() {
           <button onClick={handleAnswer}>완료</button>
         </div>
       ) : (
-        <div>
+        <div className="result">
           <p>
-            <span>점수</span> {score}/{questions.length}
+            {score}/{questions.length}
           </p>
-          <p>
-            <span>결과</span>
-          </p>
-          <ul>
+          <div className="result-list">
             {answers.map((item, index) => (
-              <li key={index}>
-                {item.question} - {item.answer} ({item.correct ? "O" : "X"})
-              </li>
+              <div className="result-item" key={index}>
+                <div className="result-column english">{item.question}</div>
+                <div
+                  className={`result-column korean" ${
+                    item.correct ? "" : "incorrect"
+                  }`}
+                >
+                  {item.answer}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
           <button onClick={resetTest}>다시 시작</button>
           <p>
-            <span>오답노트</span>
+            <h1>오답노트</h1>
           </p>
-          <ul>
-            {answers
-              .filter((item) => !item.correct)
-              .map((item, index) => (
-                <li key={index}>
-                  {item.question} - {item.correctAnswer}
-                </li>
-              ))}
-          </ul>
+          {answers
+            .filter((item) => !item.correct)
+            .map((item, index) => (
+              <div className="result-item" key={index}>
+                <div className="result-column english">{item.question}</div>
+                <div className="result-column korean">{item.correctAnswer}</div>
+              </div>
+            ))}
         </div>
       )}
     </div>
