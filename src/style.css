@@ -11,24 +11,6 @@
   margin-top: 50px;
 }
 
-button.wordManager {
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 1px solid black;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  background-color: yellow;
-}
-
-button.testManager {
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 1px solid black;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  background-color: yellowgreen;
-}
-
 .header {
   top: 0;
   left: 0;
@@ -62,14 +44,14 @@ a {
 }
 
 .nav a::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 0;
   width: 0;
   height: 2px;
   background: #fff;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .nav a:hover::before {
