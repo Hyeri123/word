@@ -40,10 +40,9 @@ function EditMode({
 
 function ViewMode({ english, korean, onEdit, onDelete }) {
   return (
-    <div className="word-item">
-      <span className="word-text">
-        {english} : {korean}
-      </span>
+    <li className="word-item">
+      <div className="word-column english">{english}</div>
+      <div className="word-column korean">{korean}</div>
       <div className="buttons">
         <button className="edit" onClick={onEdit}>
           편집
@@ -52,7 +51,7 @@ function ViewMode({ english, korean, onEdit, onDelete }) {
           삭제
         </button>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -122,27 +121,26 @@ function WordManager() {
   });
 
   return (
-    <div>
+    <div className="vocabulary-container">
       <h1>Vocabulary</h1>
       <div class="input-container">
         <input
           type="text"
-          placeholder="English"
+          placeholder="English Word"
           value={newEnglish}
           onChange={(e) => setNewEnglish(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "add")}
         />
         <input
           type="text"
-          placeholder="Korean"
+          placeholder="Korean Definition"
           value={newKorean}
           onChange={(e) => setNewKorean(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "add")}
         />
         <button onClick={addWord}>추가</button>
       </div>
-      <div>
-        <label htmlFor="sort-options">정렬 방법</label>
+      <div className="sort-container">
         <select
           id="sort-options"
           value={sortOption}
@@ -152,10 +150,10 @@ function WordManager() {
           <option value="alphabetical">알파벳순</option>
         </select>
       </div>
-      <ul>
-        {sortedWords.map((word, index) => (
-          <li key={index}>
-            {editingIndex === index ? (
+      <ul className="word-list">
+        {sortedWords.map((word, index) =>
+          editingIndex === index ? (
+            <li key={index}>
               <EditMode
                 english={editingEnglish}
                 korean={editingKorean}
@@ -165,16 +163,16 @@ function WordManager() {
                 onCancel={() => setEditingIndex(null)}
                 onKeyDown={(e) => handleKeyDown(e, "edit")}
               />
-            ) : (
-              <ViewMode
-                english={word.english}
-                korean={word.korean}
-                onEdit={() => editWord(index)}
-                onDelete={() => deleteWord(index)}
-              />
-            )}
-          </li>
-        ))}
+            </li>
+          ) : (
+            <ViewMode
+              english={word.english}
+              korean={word.korean}
+              onEdit={() => editWord(index)}
+              onDelete={() => deleteWord(index)}
+            />
+          )
+        )}
       </ul>
     </div>
   );
