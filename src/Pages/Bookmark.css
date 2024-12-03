@@ -1,27 +1,27 @@
 .bookmark {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .bookmark-list {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 .bookmark-item {
-    padding: 10px 15px;
-    margin: 5px 0;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 10px 15px;
+  margin: 5px 0;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .bookmark-item:hover {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }

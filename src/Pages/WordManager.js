@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./WordManager.css";
+import { fetchWords, createWord, updateWord, deleteWord } from "../api";
 
 function EditMode({
   english,
@@ -59,23 +60,34 @@ function WordManager() {
   const [words, setWords] = useState([]);
   const [newEnglish, setNewEnglish] = useState("");
   const [newKorean, setNewKorean] = useState("");
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [editingEnglish, setEditingEnglish] = useState("");
-  const [editingKorean, setEditingKorean] = useState("");
+  const [editingWordId, setEditingWordId] = useState(null);
+  const [editingWord, setEditingWord] = useState({ word: "", meaning: "" });
   const [sortOption, setSortOption] = useState("recent");
 
+  useEffect(() => {
+    fetchWords()
+      .then((response) => setWords(response.data))
+      .catch((error) => console.error("Error fetching words:", error));
+  }, []);
+
+  // 단어 추가
   const addWord = () => {
     if (newEnglish.trim() === "" || newKorean.trim() === "") return;
-    setWords([
-      {
-        english: newEnglish.trim(),
-        korean: newKorean.trim(),
-        timestamp: Date.now(),
-      },
-      ...words,
-    ]);
-    setNewEnglish("");
-    setNewKorean("");
+    createWord({ word: newEnglish.trim(), meaning: newKorean.trim() })
+      .then((response) => {
+        setWords([response.data, ...words]);
+        setNewEnglish("");
+        setNewKorean("");
+      })
+      .catch((error) => console.error("Error adding word:", error));
+  };
+
+  const removeWord = (id) => {
+    deleteWord(id)
+      .then(() => {
+        setWords(words.filter((word) => word.id !== id)); // 삭제 후 상태 업데이트
+      })
+      .catch((error) => console.error("Error deleting word:", error));
   };
 
   const handleKeyDown = (e, mode) => {
@@ -88,34 +100,37 @@ function WordManager() {
     }
   };
 
-  const deleteWord = (index) => {
-    setWords(words.filter((_, i) => i !== index));
+  // 편집 모드 활성화
+  const startEditing = (id) => {
+    const wordToEdit = words.find((word) => word.id === id);
+    setEditingWordId(id);
+    setEditingWord(wordToEdit);
   };
 
-  const editWord = (index) => {
-    setEditingIndex(index);
-    setEditingEnglish(words[index].english);
-    setEditingKorean(words[index].korean);
-  };
-
+  // 단어 수정 저장
   const saveEditedWord = () => {
-    if (editingEnglish.trim() === "" || editingKorean.trim() === "") return;
-    const updatedWords = [...words];
-    updatedWords[editingIndex] = {
-      english: editingEnglish.trim(),
-      korean: editingKorean.trim(),
-    };
-    setWords(updatedWords);
-    setEditingIndex(null);
-    setEditingEnglish("");
-    setEditingKorean("");
+    if (!editingWord.word.trim() || !editingWord.meaning.trim()) return;
+
+    updateWord(editingWordId, {
+      word: editingWord.word,
+      meaning: editingWord.meaning,
+    })
+      .then((response) => {
+        const updatedWords = words.map((word) =>
+          word.id === editingWordId ? response.data : word
+        );
+        setWords(updatedWords);
+        setEditingWordId(null);
+        setEditingWord({ word: "", meaning: "" });
+      })
+      .catch((error) => console.error("Error updating word:", error));
   };
 
   const sortedWords = [...words].sort((a, b) => {
     if (sortOption === "alphabetical") {
-      return a.english.localeCompare(b.english);
+      return a.word.localeCompare(b.word); // 영어 단어 기준 정렬
     } else if (sortOption === "recent") {
-      return b.timestamp - a.timestamp;
+      return b.id - a.id;
     }
     return 0;
   });
@@ -151,25 +166,29 @@ function WordManager() {
         </select>
       </div>
       <ul className="word-list">
-        {sortedWords.map((word, index) =>
-          editingIndex === index ? (
-            <li key={index}>
-              <EditMode
-                english={editingEnglish}
-                korean={editingKorean}
-                onEnglishChange={(e) => setEditingEnglish(e.target.value)}
-                onKoreanChange={(e) => setEditingKorean(e.target.value)}
-                onSave={saveEditedWord}
-                onCancel={() => setEditingIndex(null)}
-                onKeyDown={(e) => handleKeyDown(e, "edit")}
-              />
-            </li>
+        {sortedWords.map((word) =>
+          editingWordId === word.id ? (
+            <EditMode
+              key={word.id}
+              english={editingWord.word}
+              korean={editingWord.meaning}
+              onEnglishChange={(e) =>
+                setEditingWord({ ...editingWord, word: e.target.value })
+              }
+              onKoreanChange={(e) =>
+                setEditingWord({ ...editingWord, meaning: e.target.value })
+              }
+              onSave={saveEditedWord}
+              onCancel={() => setEditingWordId(null)}
+              onKeyDown={(e) => handleKeyDown(e, "edit")}
+            />
           ) : (
             <ViewMode
-              english={word.english}
-              korean={word.korean}
-              onEdit={() => editWord(index)}
-              onDelete={() => deleteWord(index)}
+              key={word.id}
+              english={word.word}
+              korean={word.meaning}
+              onEdit={() => startEditing(word.id)}
+              onDelete={() => removeWord(word.id)}
             />
           )
         )}

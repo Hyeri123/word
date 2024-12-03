@@ -1,32 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TestManager.css";
+import { fetchWords } from "../api"; // Django API에서 랜덤 단어 가져오기
 
 function TestManager() {
-  const [questions] = useState(["apple", "banana", "cherry"]);
-  const [correctAnswers] = useState(["사과", "바나나", "체리"]);
-  const [answers, setAnswers] = useState([]);
-  const [currentAnswer, setCurrentAnswer] = useState("");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [questions, setQuestions] = useState([]); // 질문 리스트
+  const [answers, setAnswers] = useState([]); // 사용자 답변
+  const [currentAnswer, setCurrentAnswer] = useState(""); // 현재 입력된 답변
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // 현재 질문 인덱스
+  const [score, setScore] = useState(0); // 점수
+  const [loading, setLoading] = useState(true); // 로딩 상태
+
+  // 단어 가져오기 및 질문 초기화
+  useEffect(() => {
+    setLoading(true);
+    fetchWords()
+      .then((response) => {
+        // 랜덤으로 질문 섞기
+        const fetchedQuestions = response.data
+          .map((item) => ({
+            question: item.word,
+            correctAnswer: item.meaning,
+          }))
+          .sort(() => Math.random() - 0.5);
+
+        setQuestions(fetchedQuestions);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching words:", error);
+        setLoading(false);
+      });
+  }, []);
 
   const handleAnswer = () => {
     if (!currentAnswer.trim()) return;
 
     const isCorrect =
-      currentAnswer.trim() === correctAnswers[currentQuestionIndex];
+      currentAnswer.trim() === questions[currentQuestionIndex].correctAnswer;
 
     setAnswers([
       ...answers,
       {
-        question: questions[currentQuestionIndex],
+        question: questions[currentQuestionIndex].question,
         answer: currentAnswer.trim(),
-        correctAnswer: correctAnswers[currentQuestionIndex],
+        correctAnswer: questions[currentQuestionIndex].correctAnswer,
         correct: isCorrect,
       },
     ]);
 
     if (isCorrect) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
 
     setCurrentAnswer("");
@@ -52,7 +75,7 @@ function TestManager() {
       {currentQuestionIndex < questions.length ? (
         <div className="problem">
           <p>다음 단어의 뜻은?</p>
-          <p>{questions[currentQuestionIndex]}</p>
+          <p>{questions[currentQuestionIndex].question}</p>
           <input
             type="text"
             placeholder="답변 입력"
